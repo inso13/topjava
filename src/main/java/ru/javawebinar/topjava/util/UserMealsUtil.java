@@ -1,6 +1,6 @@
 package ru.javawebinar.topjava.util;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
+
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
 
