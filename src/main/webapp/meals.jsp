@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://util.topjava.javawebinar.ru/functions" %>
 <html>
 <head>
     <title>Meal list</title>
@@ -32,7 +33,7 @@
         <c:choose>
             <c:when test="${mealWithExceed.isExceed()}">
                 <tr style="color: red">
-                    <td align="center">${mealWithExceed.getDateTime().toLocalDate()}</td>
+                    <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy')}</td>
                     <td align="center">${mealWithExceed.getDateTime().toLocalTime()}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
@@ -40,7 +41,7 @@
             </c:when>
             <c:otherwise>
                 <tr style="color: green">
-                    <td align="center">${mealWithExceed.getDateTime().toLocalDate()}</td>
+                    <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy')}</td>
                     <td align="center">${mealWithExceed.getDateTime().toLocalTime()}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
