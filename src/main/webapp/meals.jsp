@@ -18,10 +18,10 @@
 
 <table>
     <tr>
-        <th>Дата</th>
-        <th>Время</th>
-        <th>Описание</th>
-        <th>Калории</th>
+        <th style="border: groove">Дата</th>
+        <th style="border: groove">Время</th>
+        <th style="border: groove">Описание</th>
+        <th style="border: groove">Калории</th>
 
     </tr>
 
@@ -32,18 +32,18 @@
         <c:choose>
             <c:when test="${mealWithExceed.isExceed()}">
                 <tr style="color: red">
-                    <td>${mealWithExceed.getDateTime().toLocalDate()}</td>
+                    <td align="center">${mealWithExceed.getDateTime().toLocalDate()}</td>
                     <td align="center">${mealWithExceed.getDateTime().toLocalTime()}</td>
-                    <td>${mealWithExceed.getDescription()}</td>
-                    <td>${mealWithExceed.getCalories()}</td>
+                    <td align="center">${mealWithExceed.getDescription()}</td>
+                    <td align="center">${mealWithExceed.getCalories()}</td>
                 </tr>
             </c:when>
             <c:otherwise>
                 <tr style="color: green">
-                    <td>${mealWithExceed.getDateTime().toLocalDate()}</td>
+                    <td align="center">${mealWithExceed.getDateTime().toLocalDate()}</td>
                     <td align="center">${mealWithExceed.getDateTime().toLocalTime()}</td>
-                    <td>${mealWithExceed.getDescription()}</td>
-                    <td>${mealWithExceed.getCalories()}</td>
+                    <td align="center">${mealWithExceed.getDescription()}</td>
+                    <td align="center">${mealWithExceed.getCalories()}</td>
                 </tr>
             </c:otherwise>
         </c:choose>
