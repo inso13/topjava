@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
+import ru.javawebinar.topjava.dao.MealsDaoClass;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -24,18 +25,37 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class MealServlet extends HttpServlet
 {
+    private MealsDaoClass daoClass;
     private static final Logger LOG = getLogger(MealServlet.class);
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void init() throws ServletException {
+        super.init();
+        daoClass = new MealsDaoClass();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         LOG.debug("redirect to meals");
 
-        List<MealWithExceed> mealWithExceedList = MealsUtil.getFilteredWithExceeded(MealsUtil.meals, LocalTime.MIN, LocalTime.MAX, 2000);
+        String action = req.getParameter("action");
+        if (action==null) {List<MealWithExceed> mealWithExceedList = MealsUtil.getFilteredWithExceeded(daoClass.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
 
-        request.setAttribute("mealWithExceedList", mealWithExceedList);
+            req.setAttribute("mealWithExceedList", mealWithExceedList);
 
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
+            req.getRequestDispatcher("/meals.jsp").forward(req, resp);}
+
+        else if (action.equalsIgnoreCase("remove")){
+            int id = Integer.parseInt(req.getParameter("id"));
+            daoClass.remove(id);
+            List<Meal> list = daoClass.getAll();
+            req.setAttribute("mealWithExceedList", MealsUtil.getFilteredWithExceeded
+                    (list, LocalTime.MIN, LocalTime.MAX, 2000));
+            resp.sendRedirect("meals");
+        }
 
     }
+
+
 }

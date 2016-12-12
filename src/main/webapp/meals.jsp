@@ -15,6 +15,7 @@
 <body>
 <h2><a href="index.html">Home</a></h2>
 <h2>Meal list</h2>
+<h3><a href="meals?action=create">Add Meal</a></h3>
 
 
 <table border="1" cellpadding="8" cellspacing="0">
@@ -35,6 +36,8 @@
                     <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy HH:mm')}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
+                    <td><a href="meals?action=update">Update</a></td>
+                    <td><a href="meals?action=remove&id=${mealWithExceed.getId()}">Remove</a></td>
                 </tr>
             </c:when>
             <c:otherwise>
@@ -42,6 +45,8 @@
                     <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy HH:mm')}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
+                    <td><a href="meals?action=update">Update</a></td>
+                    <td><a href="meals?action=remove&id=${mealWithExceed.getId()}">Remove</a></td>
                 </tr>
             </c:otherwise>
         </c:choose>
