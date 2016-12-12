@@ -17,12 +17,11 @@
 <h2>Meal list</h2>
 
 
-<table>
+<table border="1" cellpadding="8" cellspacing="0">
     <tr>
-        <th style="border: groove">Дата</th>
-        <th style="border: groove">Время</th>
-        <th style="border: groove">Описание</th>
-        <th style="border: groove">Калории</th>
+        <th>Дата</th>
+        <th>Описание</th>
+        <th>Калории</th>
 
     </tr>
 
@@ -33,16 +32,14 @@
         <c:choose>
             <c:when test="${mealWithExceed.isExceed()}">
                 <tr style="color: red">
-                    <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy')}</td>
-                    <td align="center">${mealWithExceed.getDateTime().toLocalTime()}</td>
+                    <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy HH:mm')}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
                 </tr>
             </c:when>
             <c:otherwise>
                 <tr style="color: green">
-                    <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy')}</td>
-                    <td align="center">${mealWithExceed.getDateTime().toLocalTime()}</td>
+                    <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy HH:mm')}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
                 </tr>
