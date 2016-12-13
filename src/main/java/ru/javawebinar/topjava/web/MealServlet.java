@@ -54,8 +54,33 @@ public class MealServlet extends HttpServlet
                     (list, LocalTime.MIN, LocalTime.MAX, 2000));
             resp.sendRedirect("meals");
         }
+        else if(action.equalsIgnoreCase("update"))
+        {
+            int id = Integer.parseInt(req.getParameter("id"));
+            daoClass.remove(id);
+
+            Meal meal = new Meal(LocalDateTime.now(), "", 500, id);
+
+            req.setAttribute("meal", meal);
+            req.getRequestDispatcher("mealsEdit.jsp").forward(req, resp);
+
+
+        }
+
+        else if(action.equalsIgnoreCase("create"))
+        {
+
+
+        }
 
     }
 
-
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+       Meal meal = new Meal(LocalDateTime.now(), req.getParameter("description"), 500, MealsDaoClass.count.incrementAndGet());
+        //meal.setDescription(req.getParameter("Description"));
+        daoClass.create(meal);
+        resp.sendRedirect("meals");
+    }
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MealsDaoClass implements MealsDao
 {
     private Map<Integer, Meal> dao = new ConcurrentHashMap<>();
-    private static AtomicInteger count = new AtomicInteger(0);
+    public static AtomicInteger count = new AtomicInteger(0);
 
     public MealsDaoClass()
     {
@@ -33,7 +33,7 @@ public class MealsDaoClass implements MealsDao
     public void create(Meal meal)
     {
         if (!dao.containsKey(meal.getId()))
-        {meal.setId(count.incrementAndGet());
+        {
             dao.put(meal.getId(), meal);}
     }
 

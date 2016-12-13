@@ -36,7 +36,7 @@
                     <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy HH:mm')}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
-                    <td><a href="meals?action=update">Update</a></td>
+                    <td><a href="meals?action=update&id=${mealWithExceed.getId()}">Update</a></td>
                     <td><a href="meals?action=remove&id=${mealWithExceed.getId()}">Remove</a></td>
                 </tr>
             </c:when>
@@ -45,7 +45,7 @@
                     <td>${f:matches(mealWithExceed.getDateTime(), 'dd MMMM yyyy HH:mm')}</td>
                     <td align="center">${mealWithExceed.getDescription()}</td>
                     <td align="center">${mealWithExceed.getCalories()}</td>
-                    <td><a href="meals?action=update">Update</a></td>
+                    <td><a href="meals?action=update&id=${mealWithExceed.getId()}">Update</a></td>
                     <td><a href="meals?action=remove&id=${mealWithExceed.getId()}">Remove</a></td>
                 </tr>
             </c:otherwise>
