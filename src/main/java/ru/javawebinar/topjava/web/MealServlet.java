@@ -23,8 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Created by Inso on 10.12.2016.
  */
-public class MealServlet extends HttpServlet
-{
+public class MealServlet extends HttpServlet {
     private MealsDaoClass daoClass;
     private static final Logger LOG = getLogger(MealServlet.class);
 
@@ -40,34 +39,29 @@ public class MealServlet extends HttpServlet
         LOG.debug("redirect to meals");
 
         String action = req.getParameter("action");
-        if (action==null) {List<MealWithExceed> mealWithExceedList = MealsUtil.getFilteredWithExceeded(daoClass.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
+        if (action == null) {
+            List<MealWithExceed> mealWithExceedList = MealsUtil.getFilteredWithExceeded(daoClass.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
 
             req.setAttribute("mealWithExceedList", mealWithExceedList);
 
-            req.getRequestDispatcher("/meals.jsp").forward(req, resp);}
-
-        else if (action.equalsIgnoreCase("remove")){
+            req.getRequestDispatcher("/meals.jsp").forward(req, resp);
+        } else if (action.equalsIgnoreCase("remove")) {
             int id = Integer.parseInt(req.getParameter("id"));
             daoClass.remove(id);
             List<Meal> list = daoClass.getAll();
             req.setAttribute("mealWithExceedList", MealsUtil.getFilteredWithExceeded
                     (list, LocalTime.MIN, LocalTime.MAX, 2000));
             resp.sendRedirect("meals");
-        }
-        else if(action.equalsIgnoreCase("update"))
-        {
+        } else if (action.equalsIgnoreCase("update")) {
             int id = Integer.parseInt(req.getParameter("id"));
-           Meal meal = daoClass.read(id);
+            Meal meal = daoClass.read(id);
 
             daoClass.remove(id);
-           req.setAttribute("meal", meal);
+            req.setAttribute("meal", meal);
             req.getRequestDispatcher("mealsEdit.jsp").forward(req, resp);
 
 
-        }
-
-        else if(action.equalsIgnoreCase("create"))
-        {
+        } else if (action.equalsIgnoreCase("create")) {
             Meal meal = new Meal(LocalDateTime.now(), "Новая еда", 500, MealsDaoClass.count.incrementAndGet());
 
             req.setAttribute("meal", meal);
@@ -82,12 +76,15 @@ public class MealServlet extends HttpServlet
         String date = req.getParameter("datetime");
         String desc = req.getParameter("description");
         String cal = req.getParameter("calories");
-        String id = req.getParameter("id");
+        int id;
+        if (req.getParameter("id") == null) id = MealsDaoClass.count.incrementAndGet();
+        else id = Integer.valueOf(req.getParameter("id"));
 
-       Meal meal = new Meal(LocalDateTime.parse(req.getParameter("datetime")),
-               req.getParameter("description"),
-               Integer.valueOf(req.getParameter("calories")),
-               Integer.valueOf(req.getParameter("id")));
+
+        Meal meal = new Meal(LocalDateTime.parse(date),
+                desc,
+                Integer.valueOf(cal),
+                id);
 
         daoClass.create(meal);
         resp.sendRedirect("meals");
