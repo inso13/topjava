@@ -16,7 +16,7 @@
 <h2>Add or edit meal</h2>
 <form method="post" >
    <input type="hidden" name="id"
-          value="${meal.id}"/>" /> <br />
+          value="${meal.id}"/><br />
     Description : <input type="text" name="description"
                          value="${meal.description}" /><br />
     Calories: <input type="text" name="calories"

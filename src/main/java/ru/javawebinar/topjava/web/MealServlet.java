@@ -40,6 +40,7 @@ public class MealServlet extends HttpServlet {
 
         String action = req.getParameter("action");
         if (action == null) {
+            LOG.info("getAll");
             List<MealWithExceed> mealWithExceedList = MealsUtil.getFilteredWithExceeded(daoClass.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
 
             req.setAttribute("mealWithExceedList", mealWithExceedList);
@@ -48,6 +49,7 @@ public class MealServlet extends HttpServlet {
         } else if (action.equalsIgnoreCase("remove")) {
             int id = Integer.parseInt(req.getParameter("id"));
             daoClass.remove(id);
+            LOG.info("Remove{}", id);
             List<Meal> list = daoClass.getAll();
             req.setAttribute("mealWithExceedList", MealsUtil.getFilteredWithExceeded
                     (list, LocalTime.MIN, LocalTime.MAX, 2000));
@@ -55,7 +57,7 @@ public class MealServlet extends HttpServlet {
         } else if (action.equalsIgnoreCase("update")) {
             int id = Integer.parseInt(req.getParameter("id"));
             Meal meal = daoClass.read(id);
-
+            LOG.info("Update{}", id);
             daoClass.remove(id);
             req.setAttribute("meal", meal);
             req.getRequestDispatcher("mealsEdit.jsp").forward(req, resp);
@@ -63,7 +65,7 @@ public class MealServlet extends HttpServlet {
 
         } else if (action.equalsIgnoreCase("create")) {
             Meal meal = new Meal(LocalDateTime.now(), "Новая еда", 500, MealsDaoClass.count.incrementAndGet());
-
+            LOG.info("Create{}", meal.getId());
             req.setAttribute("meal", meal);
             req.getRequestDispatcher("mealsEdit.jsp").forward(req, resp);
         }
