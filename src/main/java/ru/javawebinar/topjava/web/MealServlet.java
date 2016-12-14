@@ -57,11 +57,10 @@ public class MealServlet extends HttpServlet
         else if(action.equalsIgnoreCase("update"))
         {
             int id = Integer.parseInt(req.getParameter("id"));
+           Meal meal = daoClass.read(id);
+
             daoClass.remove(id);
-
-            Meal meal = new Meal(LocalDateTime.now(), "", 500, id);
-
-            req.setAttribute("meal", meal);
+           req.setAttribute("meal", meal);
             req.getRequestDispatcher("mealsEdit.jsp").forward(req, resp);
 
 
@@ -69,17 +68,27 @@ public class MealServlet extends HttpServlet
 
         else if(action.equalsIgnoreCase("create"))
         {
+            Meal meal = new Meal(LocalDateTime.now(), "Новая еда", 500, MealsDaoClass.count.incrementAndGet());
 
-
+            req.setAttribute("meal", meal);
+            req.getRequestDispatcher("mealsEdit.jsp").forward(req, resp);
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-       Meal meal = new Meal(LocalDateTime.now(), req.getParameter("description"), 500, MealsDaoClass.count.incrementAndGet());
-        //meal.setDescription(req.getParameter("Description"));
+
+        String date = req.getParameter("datetime");
+        String desc = req.getParameter("description");
+        String cal = req.getParameter("calories");
+        String id = req.getParameter("id");
+
+       Meal meal = new Meal(LocalDateTime.parse(req.getParameter("datetime")),
+               req.getParameter("description"),
+               Integer.valueOf(req.getParameter("calories")),
+               Integer.valueOf(req.getParameter("id")));
+
         daoClass.create(meal);
         resp.sendRedirect("meals");
     }

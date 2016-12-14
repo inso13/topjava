@@ -14,9 +14,19 @@
 </head>
 <body>
 <h2>Add or edit meal</h2>
-<form method="post" action="meals">
+<form method="post" >
+   <input type="hidden" name="id"
+          value="${meal.id}"/>" /> <br />
+    Description : <input type="text" name="description"
+                         value="${meal.description}" /><br />
+    Calories: <input type="text" name="calories"
+                     value="${meal.calories}" /><br />
 
-   Description : <input type="text" name="description " value="${meal.description}"
-                      /> <br /> </form>
+    Date and time: <input type="datetime-local" name="datetime"
+                          value="${meal.dateTime}" /><br />
+
+    <button type="submit"> Save </button>
+    <button onclick="window.history.back()">Cancel</button>
+</form>
 </body>
 </html>

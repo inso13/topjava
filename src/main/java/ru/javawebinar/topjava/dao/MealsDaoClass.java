@@ -32,7 +32,6 @@ public class MealsDaoClass implements MealsDao
     @Override
     public void create(Meal meal)
     {
-        if (!dao.containsKey(meal.getId()))
         {
             dao.put(meal.getId(), meal);}
     }
