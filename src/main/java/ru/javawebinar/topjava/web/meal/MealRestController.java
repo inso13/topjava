@@ -8,6 +8,8 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 /**
@@ -50,5 +52,11 @@ public class MealRestController {
         service.update(meal, userId);
     }
 
+    public Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime)
+
+    {
+        int userId = AuthorizedUser.id();
+        return service.getBetween(startDate, startTime, endDate, endTime, userId);
+    }
 
 }

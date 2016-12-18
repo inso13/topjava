@@ -8,8 +8,12 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * User: gkislin
@@ -24,6 +28,8 @@ public class SpringMain {
             adminUserController.create(new User(1, "userName", "email", "password", Role.ROLE_ADMIN));
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
             mealRestController.save(new Meal(LocalDateTime.now(), "test", 520));
+            Collection<Meal> list = mealRestController.getBetween(LocalDate.of(1980, 5, 9), LocalTime.of(8, 0), LocalDate.of(2015, 5, 30), LocalTime.of(19, 0));
+            System.out.println(list);
 
         }
     }

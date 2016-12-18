@@ -4,8 +4,11 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,7 +64,23 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         list.add(repository.get(pair.getKey()));
         list.sort(comparator);
         }
+        if (list.size()==0) return Collections.emptyList();
         return list;
+    }
+
+    @Override
+    public Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int userId) {
+
+        Collection<Meal> result = new ArrayList<>();
+        for(Map.Entry<Integer, Meal> pair:repository.entrySet()) {
+        if ((pair.getValue().getUserId()==userId)
+                && (DateTimeUtil.isBetweenTime(pair.getValue().getTime(), startTime, endTime))
+            && (DateTimeUtil.isBetweenDate(pair.getValue().getDate(), startDate, endDate)))
+        result.add(pair.getValue());
+        }
+        if (result.size()==0) return Collections.emptyList();
+        return result;
+
     }
 }
 

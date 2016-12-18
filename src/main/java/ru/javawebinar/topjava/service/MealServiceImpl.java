@@ -6,7 +6,10 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,8 +23,8 @@ public class MealServiceImpl implements MealService {
     private MealRepository repository;
 
     @Override
-    public Meal save(Meal meal, int userID) {
-        return repository.save(meal, userID);
+    public Meal save(Meal meal, int userId) {
+        return repository.save(meal, userId);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Collection<Meal> getAll(int userId) throws NotFoundException {
-        if (repository.getAll(userId)==null) throw new NotFoundException("");
+        if (repository.getAll(userId).size()==0) throw new NotFoundException("");
         return repository.getAll(userId);
     }
 
@@ -46,5 +49,11 @@ public class MealServiceImpl implements MealService {
     public void update(Meal meal, int userId) throws NotFoundException {
         if (repository.get(meal.getId(), userId)==null) throw new NotFoundException("");
         repository.save(meal, userId);
+    }
+
+    @Override
+    public Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int userId) throws NotFoundException {
+        if (repository.getBetween(startDate, startTime, endDate, endTime, userId).size()==0) throw new NotFoundException("");
+        return repository.getBetween(startDate, startTime, endDate, endTime, userId);
     }
 }
