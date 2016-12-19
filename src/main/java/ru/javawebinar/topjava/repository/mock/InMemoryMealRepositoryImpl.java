@@ -69,12 +69,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int userId) {
+    public Collection<Meal> getBetween(LocalDate startDate, LocalDate endDate, int userId) {
 
         Collection<Meal> result = new ArrayList<>();
         for(Map.Entry<Integer, Meal> pair:repository.entrySet()) {
         if ((pair.getValue().getUserId()==userId)
-                && (DateTimeUtil.isBetweenTime(pair.getValue().getTime(), startTime, endTime))
             && (DateTimeUtil.isBetweenDate(pair.getValue().getDate(), startDate, endDate)))
         result.add(pair.getValue());
         }

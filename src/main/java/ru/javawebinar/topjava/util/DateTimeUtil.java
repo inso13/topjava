@@ -23,4 +23,28 @@ public class DateTimeUtil {
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
+
+    public static LocalDate parseStartDate(String s)
+    {
+        if (s==null||s.equals("")) return LocalDate.of(1900,1,1);
+        else return LocalDate.parse(s);
+    }
+
+    public static LocalTime parseStartTime(String s)
+    {
+        if (s==null||s.equals("")) return LocalTime.MIN;
+        else return LocalTime.parse(s);
+    }
+
+    public static LocalDate parseEndDate(String s)
+    {
+        if (s==null||s.equals("")) return LocalDate.of(2100,1,1);
+        else return LocalDate.parse(s);
+    }
+
+    public static LocalTime parseEndTime(String s)
+    {
+        if (s==null||s.equals("")) return LocalTime.MAX;
+        else return LocalTime.parse(s);
+    }
 }

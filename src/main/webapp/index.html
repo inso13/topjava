@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:jsp="http://java.sun.com/JSP/Page">
 <head>
     <meta charset="UTF-8">
     <title>Java Enterprise (Topjava)</title>
@@ -8,6 +8,12 @@
 <h3>Проект <a href="https://github.com/JavaWebinar/topjava09" target="_blank">Java Enterprise (Topjava)</a></h3>
 <hr>
 <ul>
+    <form method="post" action="users">
+        User ID : <input type="text" name="userId"/><br />
+    <hr>
+    <button type="submit">Login</button>
+    </form>
+    <hr>
     <li><a href="users">User List</a></li>
     <li><a href="meals">Meal List</a></li>
 </ul>

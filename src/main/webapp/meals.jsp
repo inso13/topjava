@@ -21,6 +21,23 @@
     <h2>Meal list</h2>
     <a href="meals?action=create">Add Meal</a>
     <hr>
+    <form method="post" action="meals?action=filter">
+    <dl>
+        <dd>StartDate: <input type="date" name="startDate"></dd>
+    </dl>
+    <dl>
+        <dd>EndDate: <input type="date" name="endDate"></dd>
+    </dl>
+    <dl>
+        <dd>StartTime: <input type="time" name="startTime"></dd>
+    </dl>
+    <dl>
+        <dd>endTime: <input type="time" name="endTime"></dd>
+    </dl>
+        <button type="submit">Filter</button>
+        <button onclick="window.history.back()">Cancel</button>
+    </form>
+
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
