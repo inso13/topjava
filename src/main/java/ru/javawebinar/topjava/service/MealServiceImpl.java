@@ -40,8 +40,8 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) throws NotFoundException {
-        if (repository.getAll(userId).size()==0) throw new NotFoundException("");
+    public Collection<Meal> getAll(int userId) {
+        if (repository.getAll(userId).size()==0) return Collections.emptyList();
         return repository.getAll(userId);
     }
 
@@ -53,7 +53,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int userId) throws NotFoundException {
-        if (repository.getBetween(startDate, startTime, endDate, endTime, userId).size()==0) throw new NotFoundException("");
+        if (repository.getBetween(startDate, startTime, endDate, endTime, userId).size()==0) return Collections.emptyList();
         return repository.getBetween(startDate, startTime, endDate, endTime, userId);
     }
 }

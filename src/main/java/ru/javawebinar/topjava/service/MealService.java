@@ -16,7 +16,7 @@ public interface MealService {
     Meal save(Meal meal, int userId);
     void delete(int id, int userId)  throws NotFoundException;
     Meal get(int id, int userId)  throws NotFoundException;
-    Collection<Meal> getAll (int userId) throws NotFoundException;
+    Collection<Meal> getAll (int userId);
     void update(Meal meal, int userId) throws NotFoundException;
-    Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int userId) throws NotFoundException;
+    Collection<Meal> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int userId);
 }
