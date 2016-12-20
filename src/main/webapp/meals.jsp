@@ -18,10 +18,14 @@
 <body>
 <section>
     <h2><a href="index.html">Home</a></h2>
+    <hr>
+   <h2> Logged as: ${userName} </h2>
+    <hr>
     <h2>Meal list</h2>
     <a href="meals?action=create">Add Meal</a>
     <hr>
     <form method="post" action="meals?action=filter">
+        <h2>Filter</h2>
     <dl>
         <dd>StartDate: <input type="date" name="startDate"></dd>
     </dl>

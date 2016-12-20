@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -36,8 +37,8 @@ public class MealServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
-        mealRestController = applicationContext.getBean(MealRestController.class);
+        try (ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
+        mealRestController = applicationContext.getBean(MealRestController.class);}
     }
 
     @Override
@@ -56,6 +57,7 @@ public class MealServlet extends HttpServlet {
             LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
             mealRestController.save(meal);
             response.sendRedirect("meals");
+
         }
         else {
             LocalDate startDate = DateTimeUtil.parseStartDate(request.getParameter("startDate"));
@@ -71,6 +73,7 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
+        request.setAttribute("userName", AuthorizedUser.getName());
         if (action == null) {
             LOG.info("getAll");
             request.setAttribute("meals",
