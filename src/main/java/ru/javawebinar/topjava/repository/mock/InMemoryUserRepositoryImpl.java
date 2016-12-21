@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.NamedEntity;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
@@ -25,6 +26,12 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private Comparator<User> comparator = Comparator.comparing(NamedEntity::getName);
 
     public static final int USER_ID=1;
+
+    {
+        repository.put(1, new User(1, "User", "user@yandex.ru", "111", Role.ROLE_USER ));
+        repository.put(2, new User(2, "Admin", "admin@yandex.ru", "222", Role.ROLE_ADMIN ));
+    }
+
 
     @Override
     public boolean delete(int id) {

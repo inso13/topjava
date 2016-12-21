@@ -11,20 +11,9 @@ public class AuthorizedUser {
     private static int userId;
 
 
-    private static String name;
-
-    public static void setName(String name) {
-        AuthorizedUser.name = name;
-    }
-
     public static void setUserId(int userId)
     {
         AuthorizedUser.userId = userId;
-        if (userId==1)
-       setName("User");
-        else if (userId==2)
-            setName("Admin");
-        else setName("Unknown user");
     }
 
     public static int id() {
@@ -35,7 +24,4 @@ public class AuthorizedUser {
         return MealsUtil.DEFAULT_CALORIES_PER_DAY;
     }
 
-    public static String getName() {
-        return name;
-    }
 }

@@ -1,16 +1,20 @@
 package ru.javawebinar.topjava.web;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.meal.MealRestController;
+import ru.javawebinar.topjava.web.user.ProfileRestController;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -22,6 +26,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -33,16 +38,20 @@ public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
     private MealRestController mealRestController;
+    private ConfigurableApplicationContext applicationContext;
+    private ProfileRestController profileRestController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        try (ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
-        mealRestController = applicationContext.getBean(MealRestController.class);}
+        applicationContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        mealRestController = applicationContext.getBean(MealRestController.class);
+        profileRestController = applicationContext.getBean(ProfileRestController.class);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if (action==null)
         {
@@ -73,7 +82,8 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        request.setAttribute("userName", AuthorizedUser.getName());
+        request.setAttribute("userName", profileRestController.get(AuthorizedUser.id()).getName()); //что бы написать чья еда
+
         if (action == null) {
             LOG.info("getAll");
             request.setAttribute("meals",
@@ -98,5 +108,11 @@ public class MealServlet extends HttpServlet {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.valueOf(paramId);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        applicationContext.close();
     }
 }
