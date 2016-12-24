@@ -61,22 +61,23 @@ public class JdbcMealRepositoryImpl implements MealRepository {
     @Override
     public boolean delete(int id, int userId) {
 
-        return jdbcTemplate.update("DELETE FROM meals WHERE id=?", id) != 0;
+        return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", id, userId) != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=?", ROW_MAPPER, id);
+        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=? AND user_id=?", ROW_MAPPER, id, userId);
         return DataAccessUtils.singleResult(meals);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? ORDER BY datetime", ROW_MAPPER, userId);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? ORDER BY datetime DESC", ROW_MAPPER, userId);
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return null;
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? " +
+                "AND datetime>? AND datetime<? ORDER BY datetime DESC", ROW_MAPPER, userId, startDate, endDate);
     }
 }
