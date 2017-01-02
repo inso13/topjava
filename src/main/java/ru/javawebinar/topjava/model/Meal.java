@@ -20,7 +20,7 @@ import java.time.LocalTime;
         @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.id=:id")
 })
 @Entity
-@Table(name = "meals")
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "user_id"}, name = "meals_unique_user_idx")})
 public class Meal extends BaseEntity {
 
     public static final String DELETE = "Meal.delete";
@@ -36,7 +36,7 @@ public class Meal extends BaseEntity {
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @Digits(fraction = 0, integer = 4)
+   // @Digits(fraction = 0, integer = 4)
     private int calories;
 
 
