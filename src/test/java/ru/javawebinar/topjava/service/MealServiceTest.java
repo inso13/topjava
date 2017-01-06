@@ -6,15 +6,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
-import org.junit.rules.TestRule;
-import org.junit.rules.Timeout;
+
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Meal;
+
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -32,6 +34,8 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private static final Logger LOG = LoggerFactory.getLogger(MealServiceTest.class);
+
 
     @Before
     public void start() {
@@ -40,7 +44,8 @@ public class MealServiceTest {
 
     @After
     public void end() {
-        System.out.println("Test " + name.getMethodName() + " took " + (System.currentTimeMillis() - start) + " ms");
+        String result = "Test " + name.getMethodName() + " took " + (System.currentTimeMillis() - start) + " ms";
+        LOG.warn(result);
     }
 
     @Autowired

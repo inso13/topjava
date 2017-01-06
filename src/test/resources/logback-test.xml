@@ -6,6 +6,14 @@
             <pattern>%-5level %logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${TOPJAVA_ROOT}/log/topjava.log</file>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %-5level %logger{0} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <logger name="org.springframework.jdbc" level="debug"/>
     <logger name="ru.javawebinar.topjava" level="debug"/>
