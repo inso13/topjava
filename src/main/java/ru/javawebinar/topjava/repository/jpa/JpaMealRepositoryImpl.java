@@ -52,7 +52,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> meals = em.createNamedQuery(Meal.GET).setParameter("id", id).setParameter("userId", userId).getResultList();
+        List<Meal> meals = em.createNamedQuery(Meal.GET, Meal.class).setParameter("id", id).setParameter("userId", userId).getResultList();
         if (meals.size() == 0) return null;
         else return DataAccessUtils.singleResult(meals);
     }
