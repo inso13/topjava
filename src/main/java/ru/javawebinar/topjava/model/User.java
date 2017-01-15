@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -54,6 +55,9 @@ public class User extends NamedEntity {
     @Digits(fraction = 0, integer = 4)
     private int caloriesPerDay = MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    private List<Meal> meals;
+
     public User() {
     }
 
@@ -72,6 +76,14 @@ public class User extends NamedEntity {
         this.caloriesPerDay = caloriesPerDay;
         this.enabled = enabled;
         this.roles = roles;
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
     }
 
     public String getEmail() {

@@ -22,6 +22,8 @@ public interface UserService {
 
     List<User> getAll();
 
+    User getWithMeals(int id)  throws NotFoundException;
+
     void update(User user);
     
     void evictCache();

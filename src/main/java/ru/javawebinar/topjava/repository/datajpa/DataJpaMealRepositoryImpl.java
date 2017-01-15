@@ -59,4 +59,11 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
 
         return crudRepository.findAllBetween(userId, startDate, endDate);
     }
+
+    @Override
+    public Meal getWithUser(int id, int userId) {
+       Meal meal = crudRepository.findOne(id);
+       meal.setUser(crudUserRepository.findOne(userId));
+       return meal;
+    }
 }
