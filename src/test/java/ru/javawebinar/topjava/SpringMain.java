@@ -22,7 +22,7 @@ public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
         try (ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
-            appCtx.getEnvironment().setActiveProfiles(Profiles.HSQLDB, Profiles.JPA);
+            appCtx.getEnvironment().setActiveProfiles(Profiles.ACTIVE_DB, Profiles.JPA);
             appCtx.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
             appCtx.refresh();
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
