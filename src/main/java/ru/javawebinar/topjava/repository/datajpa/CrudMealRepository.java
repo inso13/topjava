@@ -27,20 +27,16 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Transactional
     Meal save(Meal meal);
 
-    @Modifying
     @Query(name=Meal.GET)
-    List<Meal> findOne(@Param("id")int id, @Param("userId")int userId);
+    Meal findOne(@Param("id")int id, @Param("userId")int userId);
 
     @Modifying
     @Query(name=Meal.ALL_SORTED)
     List<Meal> findAll(@Param("userId") int userId);
 
-    @Modifying
     @Query(name=Meal.GET_BETWEEN)
     List<Meal> findAllBetween (@Param("userId") int userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-
-    @Modifying
     @Query(name=Meal.GET_WITH_USER)
-    List<Meal> getWithUser(@Param("id")int id, @Param("userId")int userId);
+    Meal getWithUser(@Param("id")int id, @Param("userId")int userId);
 }

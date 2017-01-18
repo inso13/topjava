@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 @Repository
-public abstract class  JdbcMealRepositoryImpl implements MealRepository {
+public class  JdbcMealRepositoryImpl implements MealRepository {
 
     protected static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -45,9 +45,6 @@ public abstract class  JdbcMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public abstract Meal save(Meal meal, int userId);
-
-    @Override
     public boolean delete(int id, int userId) {
         return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", id, userId) != 0;
     }
@@ -65,9 +62,6 @@ public abstract class  JdbcMealRepositoryImpl implements MealRepository {
                 "SELECT * FROM meals WHERE user_id=? ORDER BY date_time DESC", ROW_MAPPER, userId);
     }
 
-    @Override
-    public abstract List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
-
     boolean checkNew(Meal meal, MapSqlParameterSource map) {
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
@@ -82,4 +76,29 @@ public abstract class  JdbcMealRepositoryImpl implements MealRepository {
             }
         }
         return false;}
+
+    @Override
+    public Meal save(Meal meal, int userId) {
+        MapSqlParameterSource map = new MapSqlParameterSource()
+                .addValue("id", meal.getId())
+                .addValue("description", meal.getDescription())
+                .addValue("calories", meal.getCalories())
+                .addValue("date_time", convert(meal.getDateTime()))
+                .addValue("user_id", userId);
+
+        if (checkNew(meal, map)) return null;
+        return meal;
+    }
+
+    @Override
+    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
+                ROW_MAPPER, userId, convert(startDate), convert(endDate));
+    }
+
+    public <T> T convert(LocalDateTime dateTime)
+    {
+        return (T) dateTime;
+    }
 }

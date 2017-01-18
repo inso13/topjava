@@ -45,7 +45,7 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
     @Override
     public Meal get(int id, int userId) {
 
-        return DataAccessUtils.singleResult(crudRepository.findOne(id, userId));
+        return crudRepository.findOne(id, userId);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal getWithUser(int id, int userId) {
-        return DataAccessUtils.singleResult(crudRepository.getWithUser(id, userId));
+        return crudRepository.getWithUser(id, userId);
     }
 }

@@ -24,25 +24,8 @@ public class JdbcMealRepositoryImplHsql extends JdbcMealRepositoryImpl {
     }
 
     @Override
-    public Meal save(Meal meal, int userId) {
-        Date out = Date.from(meal.getDateTime().atZone(ZoneId.systemDefault()).toInstant());
-        MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", meal.getId())
-                .addValue("description", meal.getDescription())
-                .addValue("calories", meal.getCalories())
-                .addValue("date_time", out)
-                .addValue("user_id", userId);
-
-        if (checkNew(meal, map)) return null;
-        return meal;
-    }
-
-    @Override
-    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        Date start = Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
-        Date end = Date.from(endDate.atZone(ZoneId.systemDefault()).toInstant());
-        return jdbcTemplate.query(
-                "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, start, end);
+    public <T> T convert(LocalDateTime dateTime) {
+        Date out = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        return (T) out;
     }
 }
