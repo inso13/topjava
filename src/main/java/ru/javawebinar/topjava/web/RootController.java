@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javawebinar.topjava.AuthorizedUser;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,4 +38,5 @@ public class RootController {
         AuthorizedUser.setId(userId);
         return "redirect:meals";
     }
+
 }
