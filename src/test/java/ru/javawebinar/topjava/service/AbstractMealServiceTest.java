@@ -3,6 +3,8 @@ package ru.javawebinar.topjava.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.repository.BaseUtil;
+import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -19,6 +21,9 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected MealService service;
+
+    @Autowired
+    protected BaseUtil baseUtil;
 
     @Test
     public void testDelete() throws Exception {
