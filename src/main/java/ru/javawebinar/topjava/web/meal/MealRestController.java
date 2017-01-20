@@ -77,7 +77,7 @@ public class MealRestController {
                     new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "New Meal", 1000) :
                     service.get(getId(request), userId);
             model.addAttribute("meal", meal);
-            return "meal";
+            return "meal_edit";
 
         }
         return "meals";
