@@ -1,15 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fnd" uri="http://topjava.javawebinar.ru/functions" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 
 <html>
-<head>
-    <c:set var="url">${pageContext.request.requestURL}</c:set>
-    <base href="${fn:substring(url, 0, fn:length(url) - fn:length(pageContext.request.requestURI))}${pageContext.request.contextPath}/" />
-    <script>var base = document.getElementsByTagName("base")[0].href;</script>
-</head>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
@@ -54,7 +48,7 @@
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
                         <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
-                        ${fnd:formatDateTime(meal.dateTime)}
+                        ${fn:formatDateTime(meal.dateTime)}
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
