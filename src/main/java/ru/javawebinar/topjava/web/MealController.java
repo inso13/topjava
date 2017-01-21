@@ -63,11 +63,8 @@ public class MealController extends MealAbstractController {
         return "meal_edit";
     }
 
-
     @RequestMapping(method = RequestMethod.POST)
-    public String addMeal(Model model, HttpServletRequest request) {
-        String action = request.getParameter("action");
-        if (action == null) {
+    public String addMeal(HttpServletRequest request) {
             final Meal meal = new Meal(
                     LocalDateTime.parse(request.getParameter("dateTime")),
                     request.getParameter("description"),
@@ -77,17 +74,17 @@ public class MealController extends MealAbstractController {
             } else {
                 super.update(meal, getId(request));
             }
-        } else if ("filter".equals(action)) {
-            LocalDate startDate = DateTimeUtil.parseLocalDate(request.getParameter("startDate"));
-            LocalDate endDate = DateTimeUtil.parseLocalDate(request.getParameter("endDate"));
-            LocalTime startTime = DateTimeUtil.parseLocalTime(request.getParameter("startTime"));
-            LocalTime endTime = DateTimeUtil.parseLocalTime(request.getParameter("endTime"));
-            model.addAttribute("meals", super.getBetween(startDate, startTime, endDate, endTime));
-            return "meals";
-        }
         return "redirect:meals";
     }
-
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
+    public String filter(Model model, HttpServletRequest request)
+    {LocalDate startDate = DateTimeUtil.parseLocalDate(request.getParameter("startDate"));
+        LocalDate endDate = DateTimeUtil.parseLocalDate(request.getParameter("endDate"));
+        LocalTime startTime = DateTimeUtil.parseLocalTime(request.getParameter("startTime"));
+        LocalTime endTime = DateTimeUtil.parseLocalTime(request.getParameter("endTime"));
+        model.addAttribute("meals", super.getBetween(startDate, startTime, endDate, endTime));
+        return "meals";
+    }
 
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
