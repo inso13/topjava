@@ -1,13 +1,19 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
@@ -18,7 +24,7 @@ import java.util.List;
  * User: gkislin
  * Date: 26.08.2014
  */
-
+//http://wideskills.com/spring/transaction-management-in-spring
 @Repository
 public class JdbcUserRepositoryImpl implements UserRepository {
 
@@ -29,6 +35,9 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
 
     private SimpleJdbcInsert insertUser;
 
@@ -41,29 +50,43 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public User save(User user) {
-        MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", user.getId())
-                .addValue("name", user.getName())
-                .addValue("email", user.getEmail())
-                .addValue("password", user.getPassword())
-                .addValue("registered", user.getRegistered())
-                .addValue("enabled", user.isEnabled())
-                .addValue("caloriesPerDay", user.getCaloriesPerDay());
+        TransactionDefinition def = new DefaultTransactionDefinition();
+        TransactionStatus status = dataSourceTransactionManager.getTransaction(def);
+        try {
+            MapSqlParameterSource map = new MapSqlParameterSource()
+                    .addValue("id", user.getId())
+                    .addValue("name", user.getName())
+                    .addValue("email", user.getEmail())
+                    .addValue("password", user.getPassword())
+                    .addValue("registered", user.getRegistered())
+                    .addValue("enabled", user.isEnabled())
+                    .addValue("caloriesPerDay", user.getCaloriesPerDay());
 
-        if (user.isNew()) {
-            Number newKey = insertUser.executeAndReturnKey(map);
-            user.setId(newKey.intValue());
-        } else {
-            namedParameterJdbcTemplate.update(
-                    "UPDATE users SET name=:name, email=:email, password=:password, " +
-                            "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map);
+            if (user.isNew()) {
+                Number newKey = insertUser.executeAndReturnKey(map);
+                user.setId(newKey.intValue());
+            } else {
+                namedParameterJdbcTemplate.update(
+                        "UPDATE users SET name=:name, email=:email, password=:password, " +
+                                "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map);
+            }
+            dataSourceTransactionManager.commit(status);
+            return user;
+
+        } catch (DataAccessException e) {
+            dataSourceTransactionManager.rollback(status);
+           throw e;
         }
-        return user;
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
-        return jdbcTemplate.update("DELETE FROM users WHERE id=?", id) != 0;
+        try {
+            return jdbcTemplate.update("DELETE FROM users WHERE id=?", id) != 0;
+        } catch (DataAccessException e) {
+            throw e;
+        }
     }
 
     @Override
