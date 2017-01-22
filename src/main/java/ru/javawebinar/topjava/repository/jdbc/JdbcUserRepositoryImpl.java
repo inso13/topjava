@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.repository.jdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,17 +15,24 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: gkislin
  * Date: 26.08.2014
  */
 //http://wideskills.com/spring/transaction-management-in-spring
+@Transactional(readOnly = true)
 @Repository
 public class JdbcUserRepositoryImpl implements UserRepository {
 
@@ -65,10 +73,13 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             if (user.isNew()) {
                 Number newKey = insertUser.executeAndReturnKey(map);
                 user.setId(newKey.intValue());
+                setRoles(user);
+
             } else {
                 namedParameterJdbcTemplate.update(
                         "UPDATE users SET name=:name, email=:email, password=:password, " +
                                 "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map);
+                setRoles(user);
             }
             dataSourceTransactionManager.commit(status);
             return user;
@@ -106,4 +117,25 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     public List<User> getAll() {
         return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
     }
+
+    public void insertBatchSQL(final String sql){
+
+        jdbcTemplate.batchUpdate(new String[]{sql});
+
+    }
+
+    private void setRoles(User user)
+    {
+        BeanPropertyRowMapper<Role> mapper = BeanPropertyRowMapper.newInstance(Role.class);
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        for (Role role:user.getRoles())
+        {
+            int userId = user.getId();
+            String roleStr=role.toString();
+            map.addValue("userId", user.getId());
+            map.addValue("roleString", role.toString());
+            jdbcTemplate.update("INSERT INTO user_roles VALUES user_id=? AND role=?",mapper, userId, roleStr);
+        }
+    }
+
 }
