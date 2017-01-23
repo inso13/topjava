@@ -75,7 +75,6 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 Number newKey = insertUser.executeAndReturnKey(map);
                 user.setId(newKey.intValue());
                 createRoles(user);
-
             } else {
                 namedParameterJdbcTemplate.update(
                         "UPDATE users SET name=:name, email=:email, password=:password, " +
