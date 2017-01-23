@@ -6,6 +6,7 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -18,14 +19,13 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: gkislin
@@ -68,18 +68,19 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                     .addValue("password", user.getPassword())
                     .addValue("registered", user.getRegistered())
                     .addValue("enabled", user.isEnabled())
-                    .addValue("caloriesPerDay", user.getCaloriesPerDay());
+                    .addValue("caloriesPerDay", user.getCaloriesPerDay())
+                    .addValue("roles", user.getRoles());
 
             if (user.isNew()) {
                 Number newKey = insertUser.executeAndReturnKey(map);
                 user.setId(newKey.intValue());
-                setRoles(user);
+                createRoles(user);
 
             } else {
                 namedParameterJdbcTemplate.update(
                         "UPDATE users SET name=:name, email=:email, password=:password, " +
                                 "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map);
-                setRoles(user);
+                updateRoles(user);
             }
             dataSourceTransactionManager.commit(status);
             return user;
@@ -103,19 +104,25 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
-        return DataAccessUtils.singleResult(users);
+       User user = DataAccessUtils.singleResult(users);
+            getRoles(user);
+        return  user;
     }
 
     @Override
     public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        return DataAccessUtils.singleResult(users);
+        User user = DataAccessUtils.singleResult(users);
+        getRoles(user);
+        return user;
     }
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
+        for (User user:users) {getRoles(user);}
+        return users;
     }
 
     public void insertBatchSQL(final String sql){
@@ -124,18 +131,32 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     }
 
-    private void setRoles(User user)
+    private void updateRoles(User user)
     {
-        BeanPropertyRowMapper<Role> mapper = BeanPropertyRowMapper.newInstance(Role.class);
-        MapSqlParameterSource map = new MapSqlParameterSource();
         for (Role role:user.getRoles())
         {
-            int userId = user.getId();
-            String roleStr=role.toString();
-            map.addValue("userId", user.getId());
-            map.addValue("roleString", role.toString());
-            jdbcTemplate.update("INSERT INTO user_roles VALUES user_id=? AND role=?",mapper, userId, roleStr);
+            jdbcTemplate.update("UPDATE user_roles SET role=? WHERE user_id=?" ,role.toString(), user.getId());
         }
     }
 
+    private void createRoles(User user)
+    {
+        for (Role role:user.getRoles())
+        {
+            jdbcTemplate.update("INSERT INTO user_roles (user_id, role) values(?,?)" ,user.getId(), role.toString());
+        }
+    }
+    private void getRoles(User user) {
+        List<Role> roles = null;
+        try {
+            roles = jdbcTemplate.query("SELECT role FROM user_roles WHERE user_id=?", new RowMapper<Role>() {
+                    @Override
+                    public Role mapRow(ResultSet resultSet, int i) throws SQLException {
+                        return Role.valueOf(resultSet.getString("role"));
+                    }
+                }, user.getId());
+        } catch (NullPointerException e) {
+            return;
+        }
+        user.setRoles(new HashSet<Role>(roles));}
 }
