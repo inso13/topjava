@@ -55,7 +55,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
     }
-
+    @Transactional
     @Override
     public User save(User user) {
         TransactionDefinition def = new DefaultTransactionDefinition();
@@ -79,7 +79,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 namedParameterJdbcTemplate.update(
                         "UPDATE users SET name=:name, email=:email, password=:password, " +
                                 "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map);
-                updateRoles(user);
+                deleteRoles(user);
+                createRoles(user);
             }
             dataSourceTransactionManager.commit(status);
             return user;
@@ -120,30 +121,68 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        for (User user:users) {getRoles(user);}
+     /*   for (User user:users)
+        {getRoles(user);}*/
+        class Roles
+        {
+            private String role;
+            private int user_id;
+
+            public String getRole() {
+                return role;
+            }
+
+            public int getUser_id() {
+                return user_id;
+            }
+
+            public Roles(String role, int user_id) {
+                this.role = role;
+                this.user_id=user_id;
+            }
+        }
+            List<Roles> roles =jdbcTemplate.query("SELECT role, user_id FROM user_roles", new RowMapper<Roles>() {
+                @Override
+                public Roles mapRow(ResultSet resultSet, int i) throws SQLException {
+                    final Roles roles;
+                    return roles = new Roles(resultSet.getString("role"), resultSet.getInt("user_id"));
+                }
+            });
+            for (User user:users)
+            {
+                Set<Role> rolesSet = new HashSet<Role>();
+                for (Roles roles1:roles)
+                    if (roles1.user_id==user.getId())rolesSet.add(Role.valueOf(roles1.getRole()));
+                user.setRoles(rolesSet);
+            }
         return users;
     }
 
-    public void insertBatchSQL(final String sql){
-
-        jdbcTemplate.batchUpdate(new String[]{sql});
-
-    }
-
-    private void updateRoles(User user)
+    private void deleteRoles(User user)
     {
-        for (Role role:user.getRoles())
-        {
-            jdbcTemplate.update("UPDATE user_roles SET role=? WHERE user_id=?" ,role.toString(), user.getId());
-        }
+        jdbcTemplate.update("DELETE from user_roles WHERE user_id=?", user.getId());
     }
 
     private void createRoles(User user)
     {
-        for (Role role:user.getRoles())
+        String sql = "INSERT INTO user_roles (user_id, role) values(?,?)";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                Role role = user.getRoles().iterator().next();
+                preparedStatement.setInt(1, user.getId());
+                preparedStatement.setString(2, role.toString());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return user.getRoles().size();
+            }
+        });
+        /*for (Role role:user.getRoles())
         {
             jdbcTemplate.update("INSERT INTO user_roles (user_id, role) values(?,?)" ,user.getId(), role.toString());
-        }
+        }*/
     }
     private void getRoles(User user) {
         List<Role> roles = null;
