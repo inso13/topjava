@@ -9,7 +9,6 @@ import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.repository.BaseUtil;
 import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -25,8 +24,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     protected UserService service;
 
-    @Autowired
-    protected BaseUtil baseUtil;
+    @Autowired(required = false)
+    protected JpaUtil jpaUtil;
 
     @Autowired
     private Environment environment;
@@ -34,7 +33,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Before
     public void setUp() throws Exception {
         service.evictCache();
-        baseUtil.clear2ndLevelHibernateCache();
+       if(jpaUtil!=null) jpaUtil.clear2ndLevelHibernateCache();
     }
 
     @Test

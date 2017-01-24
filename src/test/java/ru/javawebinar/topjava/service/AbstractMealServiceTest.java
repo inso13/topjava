@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.BaseUtil;
 import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -25,8 +24,8 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     @Autowired
     protected MealService service;
 
-    @Autowired
-    protected BaseUtil baseUtil;
+    @Autowired(required = false)
+    protected JpaUtil jpaUtil;
 
     @Autowired
     private Environment environment;

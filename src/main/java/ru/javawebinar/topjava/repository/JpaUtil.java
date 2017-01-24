@@ -8,8 +8,8 @@ import ru.javawebinar.topjava.Profiles;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Profile({Profiles.DATAJPA, Profiles.JPA})
-public class JpaUtil extends BaseUtil{
+
+public class JpaUtil {
 
     @PersistenceContext
     private EntityManager em;
