@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
@@ -46,6 +47,7 @@ public class Meal extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private User user;
 
     public Meal() {
@@ -61,6 +63,8 @@ public class Meal extends BaseEntity {
         this.description = description;
         this.calories = calories;
     }
+
+    public Meal (Meal m) {this(m.getId(), m.getDateTime(), m.getDescription(), m.getCalories());}
 
     public LocalDateTime getDateTime() {
         return dateTime;
