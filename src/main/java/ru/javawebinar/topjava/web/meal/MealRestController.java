@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.MyFormatter;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * GKislin
@@ -67,10 +72,18 @@ public class MealRestController extends AbstractMealController {
         return super.create(meal);
     }
 
-    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealWithExceed> getBetween(@RequestParam("startDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
                                            @RequestParam("endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime)
                                           {
+        return super.getBetween(startDateTime.toLocalDate(), startDateTime.toLocalTime(), endDateTime.toLocalDate(), endDateTime.toLocalTime());
+    }*/
+
+
+    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MealWithExceed> getBetween(@RequestParam("startDateTime") LocalDateTime startDateTime,
+                                           @RequestParam("endDateTime") LocalDateTime endDateTime)
+    {
         return super.getBetween(startDateTime.toLocalDate(), startDateTime.toLocalTime(), endDateTime.toLocalDate(), endDateTime.toLocalTime());
     }
 }
