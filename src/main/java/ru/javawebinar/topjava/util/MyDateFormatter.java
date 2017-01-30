@@ -3,17 +3,19 @@ package ru.javawebinar.topjava.util;
 import org.springframework.format.Formatter;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.StringJoiner;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 /**
  * Created by Inso on 28.01.2017.
  */
-public class MyFormatter implements Formatter<LocalDateTime> {
+public class MyDateFormatter implements Formatter<LocalDate> {
 
    /* @Override
     public LocalDateTime parse(String s, Locale locale) throws ParseException {
@@ -35,8 +37,8 @@ public class MyFormatter implements Formatter<LocalDateTime> {
     }*/
 
     @Override
-    public LocalDateTime parse(String s, Locale locale) throws ParseException {
-        return LocalDateTime.parse(s);
+    public LocalDate parse(String s, Locale locale) throws ParseException {
+        return DateTimeUtil.parseLocalDate(s);
     }
 
     /*@Override
@@ -51,7 +53,7 @@ public class MyFormatter implements Formatter<LocalDateTime> {
     }*/
 
     @Override
-    public String print(LocalDateTime dateTime, Locale locale) {
-        return ISO_LOCAL_DATE_TIME.format(dateTime);
+    public String print(LocalDate dateTime, Locale locale) {
+        return ISO_LOCAL_DATE.format(dateTime);
     }
 }
