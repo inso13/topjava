@@ -119,13 +119,11 @@ public class MealRestControllerTest extends AbstractControllerTest{
         String endTime="17:00";
 
         TestUtil.print(mockMvc.perform(get(REST_URL+"between?startDate="
-                +startDate+"&startTime="
-                +startTime+"&endDate="
-                +endDate+"&endTime="
-                +endTime)))
+               +startDate
+                +"&endDate="+endDate)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER_EXCEEDED.contentListMatcher(MealsUtil.getWithExceeded(Arrays.asList(MEAL2, MEAL1),
+                .andExpect(MATCHER_EXCEEDED.contentListMatcher(MealsUtil.getWithExceeded(Arrays.asList(MEAL3, MEAL2, MEAL1),
                         USER.getCaloriesPerDay())));
     }
 }
