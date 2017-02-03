@@ -12,7 +12,7 @@
     <div class="container">
         <div class="shadow">
             <h3><spring:message code="meals.title"/></h3>
-            <form method="post" action="meals/filter">
+            <form>
                 <dl>
                     <dt><spring:message code="meals.startDate"/>:</dt>
                     <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -29,7 +29,9 @@
                     <dt><spring:message code="meals.endTime"/>:</dt>
                     <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
                 </dl>
-                <button type="submit"><spring:message code="meals.filter"/></button>
+                <a class="btn btn-xs btn-danger" onclick="filter('2015-05-29', '10:00', '2015-05-30', '17:00')">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><spring:message code="meals.filter"/>
+                </a>
             </form>
             <div class="view-box">
                 <a class="btn btn-sm btn-info" onclick="add()">
@@ -37,7 +39,6 @@
                 </a>
                 <table class="table table-striped display" id="datatable">
                     <thead>
-
                     <tr>
                         <th><spring:message code="meals.dateTime"/></th>
                         <th><spring:message code="meals.description"/></th>
