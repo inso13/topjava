@@ -11,8 +11,9 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3><spring:message code="meals.title"/></h3>
-            <form>
+            <div class="view-box">
+                <h3><spring:message code="meals.filter"/></h3>
+            <form class=form-horizontal method="post" role=form id="filterForm">
                 <dl>
                     <dt><spring:message code="meals.startDate"/>:</dt>
                     <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -29,14 +30,15 @@
                     <dt><spring:message code="meals.endTime"/>:</dt>
                     <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
                 </dl>
-                <a class="btn btn-xs btn-danger" onclick="filter('2015-05-29', '10:00', '2015-05-30', '17:00')">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><spring:message code="meals.filter"/>
-                </a>
+                <button type="button" class="btn btn-xl btn-warning" onclick="filtered()">
+                    <span class="glyphicon glyphicon-sort" aria-hidden="true"></span><spring:message code="meals.filter"/>
+                    </button>
             </form>
-            <div class="view-box">
+            <hr/>
                 <a class="btn btn-sm btn-info" onclick="add()">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span><spring:message code="meals.add"/>
                 </a>
+                <h3><spring:message code="meals.title"/></h3>
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
@@ -83,7 +85,7 @@
                     <input type="text" hidden="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="dateTime" class="control-label col-xs-3"><spring:message code="users.email"/></label>
+                        <label for="dateTime" class="control-label col-xs-3"><spring:message code="meals.dateTime"/></label>
 
                         <div class="col-xs-9">
                             <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" placeholder="<spring:message code="meals.dateTime"/>">

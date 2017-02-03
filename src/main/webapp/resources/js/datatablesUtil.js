@@ -18,22 +18,22 @@ function add() {
     $('#editRow').modal();
 }
 
-function filter(startDate, startTime, endDate, endTime) {
-  $.ajax({
-    url: ajaxUrl+'filter',
-      type: 'GET',
-      success:function () {
-          $.get(ajaxUrl+'filter?startDate='+startDate+'&startTime='+startTime+'&endDate='+endDate+'&endTime='+endTime, function (data) {
-              datatableApi.clear();
-              $.each(data, function (key, item) {
-                  datatableApi.row.add(item);
-              });
-              datatableApi.draw();
-          });
-          successNoty('Filtered');
-      }
-  });
+function filtered() {
+    $.ajax({
+        type: 'POST',
+        url: ajaxUrl + 'filter',
+        data: $('#filterForm').serialize(),
+        success: function (data) {
+                datatableApi.clear();
+                $.each(data, function (key, item) {
+                    datatableApi.row.add(item);
+                });
+                datatableApi.draw();
+            successNoty('Filtered');
+        }
+    });
 }
+
 
 function deleteRow(id) {
     $.ajax({
@@ -64,7 +64,8 @@ function save() {
         data: form.serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            updateTable();
+            filtered();
+            //TODO: make different for user and meal updateTable();
             successNoty('Saved');
         }
     });
