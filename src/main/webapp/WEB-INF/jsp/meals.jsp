@@ -33,7 +33,7 @@
             </form>
             <div class="view-box">
                 <a class="btn btn-sm btn-info" onclick="add()">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span><spring:message code="meals.add"/>
                 </a>
                 <table class="table table-striped display" id="datatable">
                     <thead>
@@ -57,10 +57,10 @@
                             <td>${meal.description}</td>
                             <td>${meal.calories}</td>
                             <td><a class="btn btn-xs btn-primary edit" id="${meal.id}">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><spring:message code="common.update"/>
                             </a></td>
-                            <td><a class="btn btn-xs btn-danger delete" id="${meal.id}">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            <td><a class="btn btn-xs btn-danger" onclick="deleteRow(${meal.id})">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><spring:message code="common.delete"/>
                             </a></td>
                         </tr>
                     </c:forEach>
