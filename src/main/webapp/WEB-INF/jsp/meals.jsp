@@ -33,6 +33,9 @@
                 <button type="button" class="btn btn-xl btn-warning" onclick="filtered()">
                     <span class="glyphicon glyphicon-sort" aria-hidden="true"></span><spring:message code="meals.filter"/>
                     </button>
+                <button type="reset" class="btn btn-xl btn-primary" onclick="updateTable()">
+                    <span class="glyphicon glyphicon-sort" aria-hidden="true"></span><spring:message code="meals.resetfilter"/>
+                </button>
             </form>
             <hr/>
                 <a class="btn btn-sm btn-info" onclick="add()">

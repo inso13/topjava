@@ -18,23 +18,6 @@ function add() {
     $('#editRow').modal();
 }
 
-function filtered() {
-    $.ajax({
-        type: 'POST',
-        url: ajaxUrl + 'filter',
-        data: $('#filterForm').serialize(),
-        success: function (data) {
-                datatableApi.clear();
-                $.each(data, function (key, item) {
-                    datatableApi.row.add(item);
-                });
-                datatableApi.draw();
-            successNoty('Filtered');
-        }
-    });
-}
-
-
 function deleteRow(id) {
     $.ajax({
         url: ajaxUrl + id,
@@ -46,16 +29,6 @@ function deleteRow(id) {
     });
 }
 
-function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        datatableApi.clear();
-        $.each(data, function (key, item) {
-            datatableApi.row.add(item);
-        });
-        datatableApi.draw();
-    });
-}
-
 function save() {
     var form = $('#detailsForm');
     $.ajax({
@@ -64,10 +37,36 @@ function save() {
         data: form.serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            filtered();
-            //TODO: make different for user and meal updateTable();
+            if (ajaxUrl=="ajax/meals/") filtered();
+            else updateTable();
             successNoty('Saved');
         }
+    });
+}
+
+function filtered() {
+    $.ajax({
+        type: 'POST',
+        url: ajaxUrl + 'filter',
+        data: $('#filterForm').serialize(),
+        success: function (data) {
+            datatableApi.clear();
+            $.each(data, function (key, item) {
+                datatableApi.row.add(item);
+            });
+            datatableApi.draw();
+            successNoty('Filtered');
+        }
+    });
+}
+
+function updateTable() {
+    $.get(ajaxUrl, function (data) {
+        datatableApi.clear();
+        $.each(data, function (key, item) {
+            datatableApi.row.add(item);
+        });
+        datatableApi.draw();
     });
 }
 
