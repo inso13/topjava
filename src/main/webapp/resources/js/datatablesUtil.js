@@ -13,6 +13,19 @@ function makeEditable() {
     });
 }
 
+function changeposotion(id)
+{
+    $.ajax({
+        url: ajaxUrl + id,
+        type: 'POST',
+        success: function () {
+            updateTable();
+            successNoty('Changed status');
+        }
+    });
+}
+
+
 function add() {
     $('#id').val(null);
     $('#editRow').modal();

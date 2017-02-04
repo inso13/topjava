@@ -1,9 +1,11 @@
 package ru.javawebinar.topjava.web.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.repository.UserRepository;
 
 import java.util.List;
 
@@ -39,4 +41,10 @@ public class AdminAjaxController extends AbstractUserController {
             super.update(user, id);
         }
     }
+    @Override
+    @PostMapping("/{id}")
+    public void change(@PathVariable("id") int id) {
+        super.change(id);
+    }
+
 }

@@ -71,4 +71,9 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public void change(int id) {
+
+    }
 }

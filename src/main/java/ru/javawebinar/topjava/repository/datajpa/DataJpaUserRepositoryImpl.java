@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.validation.OverridesAttribute;
 import java.util.List;
 
 /**
@@ -48,5 +49,15 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
     @Override
     public User getWithMeals(int id) {
         return crudRepository.getWithMeals(id);
+    }
+
+    @Override
+    public void change(int id)
+    {
+        User user = crudRepository.findOne(id);
+        boolean status = user.isEnabled();
+        boolean newStatus = !status;
+        user.setEnabled(newStatus);
+        crudRepository.save(user);
     }
 }
