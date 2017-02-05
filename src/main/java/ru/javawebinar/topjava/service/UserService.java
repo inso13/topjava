@@ -28,5 +28,4 @@ public interface UserService {
 
     User getWithMeals(int id);
 
-    void change(int id);
 }

@@ -40,7 +40,7 @@
                             <td><a href="mailto:${user.email}">${user.email}</a></td>
                             <td>${user.roles}</td>
                             <td>
-                                <input type="checkbox" id="checkenabled" onchange="changeposotion((${user.id}))"
+                                <input type="checkbox" id="checkenabled" onchange="changeStatus(${user.id})"
                                        <c:if test="${user.enabled}">checked</c:if>
                                        id="${user.id}"/>
                             </td>

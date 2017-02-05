@@ -138,8 +138,4 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return u;
     }
 
-    @Override
-    public void change(int id) {
-
-    }
 }

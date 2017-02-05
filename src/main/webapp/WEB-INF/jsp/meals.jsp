@@ -34,7 +34,7 @@
                     <span class="glyphicon glyphicon-sort" aria-hidden="true"></span><spring:message code="meals.filter"/>
                     </button>
                 <button type="reset" class="btn btn-xl btn-primary" onclick="updateTable()">
-                    <span class="glyphicon glyphicon-sort" aria-hidden="true"></span><spring:message code="meals.resetfilter"/>
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><spring:message code="meals.resetfilter"/>
                 </button>
             </form>
             <hr/>

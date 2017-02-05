@@ -13,7 +13,7 @@ function makeEditable() {
     });
 }
 
-function changeposotion(id)
+function changeStatus(id)
 {
     $.ajax({
         url: ajaxUrl + id,
@@ -25,7 +25,6 @@ function changeposotion(id)
     });
 }
 
-
 function add() {
     $('#id').val(null);
     $('#editRow').modal();
@@ -36,7 +35,8 @@ function deleteRow(id) {
         url: ajaxUrl + id,
         type: 'DELETE',
         success: function () {
-            updateTable();
+            if (ajaxUrl.indexOf("meals")!=-1) filtered();
+            else updateTable();
             successNoty('Deleted');
         }
     });
@@ -50,7 +50,7 @@ function save() {
         data: form.serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            if (ajaxUrl=="ajax/meals/") filtered();
+            if (ajaxUrl.indexOf("meals")!=-1) filtered();
             else updateTable();
             successNoty('Saved');
         }

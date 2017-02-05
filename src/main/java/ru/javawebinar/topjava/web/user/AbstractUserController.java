@@ -53,7 +53,9 @@ public abstract class AbstractUserController {
     }
 
     public void change(int id) {
-        log.info("Changed status for "+id);
-        service.change(id);
+        User user = get(id);
+        user.setEnabled(!user.isEnabled());
+        update(user, user.getId());
+        log.info("Changed status for "+user);
     }
 }

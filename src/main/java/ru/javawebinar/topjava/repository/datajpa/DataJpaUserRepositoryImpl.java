@@ -51,13 +51,4 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
         return crudRepository.getWithMeals(id);
     }
 
-    @Override
-    public void change(int id)
-    {
-        User user = crudRepository.findOne(id);
-        boolean status = user.isEnabled();
-        boolean newStatus = !status;
-        user.setEnabled(newStatus);
-        crudRepository.save(user);
-    }
 }
