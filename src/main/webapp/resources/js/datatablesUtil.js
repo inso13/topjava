@@ -1,3 +1,5 @@
+var filter=false;
+
 function makeEditable() {
     $('.delete').click(function () {
         deleteRow($(this).attr("id"));
@@ -35,7 +37,7 @@ function deleteRow(id) {
         url: ajaxUrl + id,
         type: 'DELETE',
         success: function () {
-            if (ajaxUrl.indexOf("meals")!=-1) filtered();
+            if (filter) filtered();
             else updateTable();
             successNoty('Deleted');
         }
@@ -50,7 +52,7 @@ function save() {
         data: form.serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            if (ajaxUrl.indexOf("meals")!=-1) filtered();
+            if (filter) filtered();
             else updateTable();
             successNoty('Saved');
         }
@@ -69,6 +71,7 @@ function filtered() {
             });
             datatableApi.draw();
             successNoty('Filtered');
+            filter=true;
         }
     });
 }
@@ -80,6 +83,7 @@ function updateTable() {
             datatableApi.row.add(item);
         });
         datatableApi.draw();
+        filter=false;
     });
 }
 
