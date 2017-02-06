@@ -102,7 +102,8 @@ function successNoty(text) {
         text: text,
         type: 'success',
         layout: 'bottomRight',
-        timeout: true
+        timeout: true,
+        theme: 'relax'
     });
 }
 
@@ -111,6 +112,7 @@ function failNoty(event, jqXHR, options, jsExc) {
     failedNote = noty({
         text: 'Failed: ' + jqXHR.statusText + "<br>",
         type: 'error',
-        layout: 'bottomRight'
+        layout: 'bottomRight',
+        theme: 'relax'
     });
 }
