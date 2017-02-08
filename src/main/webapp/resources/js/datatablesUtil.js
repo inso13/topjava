@@ -13,6 +13,7 @@ function makeEditable() {
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
+    init();
 }
 
 function changeStatus(id)
@@ -21,8 +22,8 @@ function changeStatus(id)
         url: ajaxUrl + id,
         type: 'POST',
         success: function () {
-            updateTable();
             successNoty('Changed status');
+            init();
         }
     });
 }
@@ -84,6 +85,7 @@ function updateTable() {
         });
         datatableApi.draw();
         filter=false;
+        init();
     });
 }
 
@@ -114,5 +116,13 @@ function failNoty(event, jqXHR, options, jsExc) {
         type: 'error',
         layout: 'bottomRight',
         theme: 'relax'
+    });
+}
+
+function init()
+{
+    $(':checkbox').each(function () {
+        if (!$(this).is(":checked")) {$(this).parent().parent().css("text-decoration", "line-through");}
+        else {$(this).parent().parent().css("text-decoration", "none");}
     });
 }

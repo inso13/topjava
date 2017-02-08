@@ -46,5 +46,4 @@ public class AdminAjaxController extends AbstractUserController {
     public void change(@PathVariable("id") int id) {
         super.change(id);
     }
-
 }
