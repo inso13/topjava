@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.to.MealsTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 
@@ -51,6 +52,13 @@ public abstract class AbstractMealController {
         LOG.info("update {} for User {}", meal, userId);
         service.update(meal, userId);
     }
+
+    public void update(MealsTo mealsTo) {
+        int userId = AuthorizedUser.id();
+        LOG.info("update {} for User {}", mealsTo, userId);
+        service.update(mealsTo, userId);
+    }
+
 
     public Meal create(Meal meal) {
         checkNew(meal);
