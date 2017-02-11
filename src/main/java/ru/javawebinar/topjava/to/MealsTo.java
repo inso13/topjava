@@ -3,6 +3,8 @@ package ru.javawebinar.topjava.to;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -12,19 +14,18 @@ import java.time.LocalDateTime;
 /**
  * Created by Inso on 10.02.2017.
  */
-public class MealsTo implements Serializable {
+public class MealsTo implements Serializable { //TODO: add correct constraints
     private static final long serialVersionUID = 1L;
     private Integer id;
 
-    @NotEmpty(message = " must not be empty")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateTime;
 
     @NotBlank(message = " must not be empty")
     private String description;
 
-    @NotEmpty
-    @Range(min = 10, max = 5000, message = " must between 10 and 5000 calories")
-    private int calories;
+   @Range(min = 10, max = 5000, message = " must between 10 and 5000 calories")
+    private int calories /*= MealsUtil.DEFAULT_CALORIES*/;
 
     public MealsTo() {}
 
@@ -79,9 +80,9 @@ public class MealsTo implements Serializable {
     public String toString() {
         return "MealsTo{" +
                 "id=" + id +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + dateTime + '\'' +
                 ", description='" + description + '\'' +
-                ", calories=" + calories +
+                ", calories=" + calories + '\'' +
                 '}';
     }
 }
