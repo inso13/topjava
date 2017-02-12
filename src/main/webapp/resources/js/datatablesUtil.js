@@ -7,12 +7,21 @@ function makeEditable() {
     });
 }
 
+function picker()
+{
+        jQuery('#dateTime').datetimepicker(
+        {format:'Y-m-d\\TH:i'
+        });
+}
+
 function add(title) {
     $('#modalTitle').html(title);
     // form.find(":input").val("");
     // form.trigger('reset');
     form[0].reset();
+    picker();
     $('#editRow').modal();
+
 }
 
 function updateRow(id) {
@@ -22,6 +31,7 @@ function updateRow(id) {
             form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
+        picker();
     });
 }
 

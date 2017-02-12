@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,7 +29,7 @@ public class MealsTo implements Serializable {
     private String description;
 
     @Range(min = 10, max = 5000, message = " must between 10 and 5000 calories")
-    private int calories /*= MealsUtil.DEFAULT_CALORIES*/;
+    private int calories;
 
     public MealsTo() {}
 

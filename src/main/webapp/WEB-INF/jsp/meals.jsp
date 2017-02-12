@@ -117,7 +117,7 @@
                                 code="meals.dateTime"/></label>
 
                         <div class="col-xs-9">
-                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
+                            <input type = text class="form-control" id="dateTime" name="dateTime"
                                    placeholder="<spring:message code="meals.dateTime"/>">
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                                 code="meals.calories"/></label>
 
                         <div class="col-xs-9">
-                            <input type="number" class="form-control" id="calories" name="calories" placeholder="1000">
+                            <input type="number" min="10" max="5000" value="1000" class="form-control" id="calories" name="calories" placeholder="1000">
                         </div>
                     </div>
                     <div class="form-group">
