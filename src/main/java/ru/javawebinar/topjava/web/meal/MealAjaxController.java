@@ -41,16 +41,16 @@ public class MealAjaxController extends AbstractMealController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid MealsTo mealsTo, BindingResult result) {
+    public ResponseEntity<String> createOrUpdate(@Valid Meal meal, BindingResult result) {
         if (result.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             result.getFieldErrors().forEach(fe -> sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("<br>"));
             return new ResponseEntity<>(sb.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if (mealsTo.isNew()) {
-            super.create(MealsUtil.createNewFromTo(mealsTo));
+        if (meal.isNew()) {
+            super.create(meal);
         } else {
-            super.update(mealsTo);
+            super.update(meal, meal.getId());
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
