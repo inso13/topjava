@@ -10,7 +10,8 @@ function makeEditable() {
 function picker()
 {
         jQuery('#dateTime').datetimepicker(
-        {format:'Y-m-d\\TH:i'
+        /*{format:'Y-m-d\\TH:i'*/
+            {  format:'yyyy-mm-ddThh:ii'
         });
 }
 

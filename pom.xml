@@ -286,6 +286,11 @@
         </dependency>
         <dependency>
             <groupId>org.webjars.bower</groupId>
+            <artifactId>smalot-bootstrap-datetimepicker</artifactId>
+            <version>2.3.8</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.webjars.bower</groupId>
             <artifactId>datetimepicker</artifactId>
             <version>${webjars-datetimepicker.version}</version>
             <exclusions>
@@ -294,7 +299,7 @@
                     <artifactId>jquery</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>noty</artifactId>
