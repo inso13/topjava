@@ -13,6 +13,7 @@ function picker()
         /*{format:'Y-m-d\\TH:i'*/
             {  format:'yyyy-mm-ddThh:ii'
         });
+
 }
 
 function add(title) {
@@ -29,6 +30,7 @@ function updateRow(id) {
     $('#modalTitle').html(editTitle);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
+            if (key==='dateTime') {value = value.replace('T', ' ').substring(0, 16);}
             form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
