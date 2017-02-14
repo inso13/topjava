@@ -11,7 +11,7 @@ function picker()
 {
         jQuery('#dateTime').datetimepicker(
         /*{format:'Y-m-d\\TH:i'*/
-            {  format:'yyyy-mm-ddThh:ii'
+            {  format:'yyyy-mm-dd hh:ii'
         });
 
 }
@@ -20,7 +20,8 @@ function add(title) {
     $('#modalTitle').html(title);
     // form.find(":input").val("");
     // form.trigger('reset');
-    form[0].reset();
+   // form[0].reset();
+    $('input').val('');
     picker();
     $('#editRow').modal();
 
@@ -54,10 +55,12 @@ function updateTableByData(data) {
 }
 
 function save() {
+    var str = form.serialize();
+    str = str.replace('%20', 'T');
     $.ajax({
         type: "POST",
         url: ajaxUrl,
-        data: form.serialize(),
+        data: str,
         success: function () {
             $('#editRow').modal('hide');
             updateTable();
