@@ -1,5 +1,6 @@
 var ajaxUrl = "ajax/profile/meals/";
 var datatableApi;
+var editTitle = 'meals.edit';
 
 // $(document).ready(function () {
 function clearFilter() {
