@@ -85,7 +85,7 @@ function successNoty(key) {
 function statusTexts(status)
 {
     if (status==400) return 'Bad request';
-    if (status==409) return 'Already exists';
+    if (status==409) return 'Conflict';
     else return 'error';
 }
 

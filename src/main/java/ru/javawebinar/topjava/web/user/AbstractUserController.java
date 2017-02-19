@@ -3,12 +3,17 @@ package ru.javawebinar.topjava.web.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkIdConsistent;
@@ -51,6 +56,10 @@ public abstract class AbstractUserController {
 
     public void update(UserTo userTo) {
         log.info("update " + userTo);
+       Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        for (GrantedAuthority authority:authorities) {
+        if (authority.toString().equals("ROLE_ADMIN"))
+        {if (userTo.getId()==null) {userTo.setId(AuthorizedUser.id());} service.update(userTo); return;}}
         checkIdConsistent(userTo, AuthorizedUser.id());
         service.update(userTo);
     }
