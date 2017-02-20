@@ -6,11 +6,13 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
+
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header navbar-brand"><spring:message code="app.title"/></div>
         <div class="navbar-collapse collapse">
-            <form:form class="navbar-form navbar-right" role="form" action="spring_security_check" method="post">
+            <ul class="nav navbar-nav navbar-right">
+            <li> <form:form class="navbar-form navbar-right" role="form" action="spring_security_check" method="post">
                 <div class="form-group">
                     <input type="text" placeholder="Email" class="form-control" name="username">
                 </div>
@@ -20,7 +22,18 @@
                 <button type="submit" class="btn btn-success">
                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                 </button>
-            </form:form>
+            </form:form></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    ${pageContext.response.locale}
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="${requestScope['javax.servlet.forward.request_uri']}?language=en">English</a></li>
+                    <li><a href="${requestScope['javax.servlet.forward.request_uri']}?language=ru">Русский</a></li>
+                </ul>
+            </li>
+            </ul>
         </div>
     </div>
 </div>
